@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN (アイコン用) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            --primary: #0056b3;      /* 知的な濃い青 */
+            --primary-light: #e3f2fd; /* 背景用の薄い青 */
+            --accent: #00a8cc;       /* アクセントの水色 */
+            --text-main: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --bg-body: #f8f9fa;
+            --font-jp: 'Noto Sans JP', sans-serif;
+            --font-en: 'Roboto', sans-serif;
+            --spacing-section: 80px;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 86, 179, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-jp);
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- Components --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary);
+            font-family: var(--font-en);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--white);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-en);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 60vh;
+            min-height: 400px;
+            margin-top: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-light) 0%, #ffffff 100%);
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-family: var(--font-en);
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        /* --- About Section --- */
+        .section {
+            padding: var(--spacing-section) 0;
+        }
+
+        .about-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        /* --- Gakuchika Section (Focus) --- */
+        .gakuchika-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .gakuchika-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .gakuchika-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .gakuchika-header p {
+            opacity: 0.9;
+        }
+
+        .gakuchika-body {
+            padding: 40px;
+        }
+
+        /* 課題エリア */
+        .challenge-box {
+            background: #fff4f4;
+            border-left: 5px solid #ff6b6b;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+        
+        .challenge-title {
+            color: #d63031;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 施策（3つの改革）グリッド */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .solution-item {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .solution-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
+        }
+
+        .solution-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .solution-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: left;
+        }
+
+        /* 結果エリア */
+        .result-box {
+            background: #f0f9ff;
+            border-left: 5px solid var(--accent);
+            padding: 25px;
+            border-radius: 4px;
+        }
+
+        .result-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--primary);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive --- */
+        @media (min-width: 768px) {
+            .about-card {
+                flex-direction: row;
+                text-align: left;
+                gap: 40px;
+            }
+            .avatar-placeholder {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            .gakuchika-body { padding: 25px; }
+            .section-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-inner">
+            <div class="logo">My Portfolio</div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Create Value.</h1>
+            <p>論理と情熱で、課題を解決する。</p>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-card">
+                <!-- 画像代わりのアイコン -->
+                <div class="avatar-placeholder">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="about-info">
+                    <h3 class="profile-name">山田 太郎 (Taro Yamada)</h3>
+                    <p class="profile-role">〇〇大学 情報学部 情報科学科 3年</p>
+                    <p>
+                        情報系大学生としてプログラミングとWebデザインを学んでいます。
+                        「仕組み」を作ることに興味があり、日々の課題を技術や工夫で解決することが得意です。
+                        現在はフロントエンド技術を中心にスキルアップ中です。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gakuchika -->
+    <section class="section" id="gakuchika">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            
+            <div class="gakuchika-container">
+                <!-- Header of Story -->
+                <div class="gakuchika-header">
+                    <h3><i class="fa-solid fa-tennis-ball" style="margin-right:10px;"></i>テニス部部長としての練習改革</h3>
+                    <p>環境の制約を「仕組み化」で克服し、練習密度を2倍に向上</p>
+                </div>
+
+                <div class="gakuchika-body">
+                    <!-- Context & Challenge -->
+                    <div class="challenge-box">
+                        <div class="challenge-title"><i class="fa-solid fa-triangle-exclamation"></i> 課題：コート不足による待機時間</div>
+                        <p>
+                            活動の原動力はテニスへの熱意でしたが、部員25名に対しコートが1面しかありませんでした。
+                            そのため、練習時間の<strong>約5割が待ち時間</strong>となってしまうのが最大の課題でした。
+                        </p>
+                    </div>
+
+                    <!-- Solutions (3 Columns) -->
+                    <h4 style="text-align:center; margin-bottom:20px; color:var(--text-light);">待ち時間を価値に変える「3つの改革」</h4>
+                    <div class="solutions-grid">
+                        <!-- Reform 1 -->
+                        <div class="solution-item">
+                            <div class="icon-box">
+                                <i class="fa-solid fa-tablet-screen-button"></i>
+                            </div>
+                            <h5 class="solution-title">1. iPadの導入</h5>
+                            <p class="solution-desc">
+                                学校のiPadを練習に導入し、待機している部員がただ休むのではなく、データや情報に触れる環境を整備しました。
+                            </p>
+                        </div>
+                        <!-- Reform 2 -->
+                        <div class="solution-item">
+                            <div class="icon-box">
+                                <i class="fa-solid fa-video"></i>
+                            </div>
+                            <h5 class="solution-title">2. 動画でフォーム確認</h5>
+                            <p class="solution-desc">
+                                自分のプレーを撮影し、即座に動画で客観視。感覚と実際の動きのズレを修正する時間に充てました。
+                            </p>
+                        </div>
+                        <!-- Reform 3 -->
+                        <div class="solution-item">
+                            <div class="icon-box">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <h5 class="solution-title">3. 言語化の徹底</h5>
+                            <p class="solution-desc">
+                                次のプレーでの修正点を「言語化」してから打つサイクルを徹底し、論理的なプレーを習慣化しました。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Result -->
+                    <div class="result-box">
+                        <div class="result-title"><i class="fa-solid fa-chart-line"></i> 結果：練習密度が約2倍へ</div>
+                        <p>
+                            以前はただの休憩だった時間を「分析タイム」へと変革することに成功しました。
+                            これにより実質的な練習密度は約2倍に向上。
+                            大会実績以上に、<strong>部員全員が論理的にプレーを説明できる状態</strong>を作り上げ、この仕組みは後輩の代まで引き継がれています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 My Portfolio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
