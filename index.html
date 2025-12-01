@@ -10,7 +10,7 @@
         :root {
             --primary: #0067C0;     /* 船橋ブルー */
             --accent: #B8D200;      /* 船橋の梨グリーン */
-            --primary-light: #E6F2FF; /* 薄い水色 */
+            --primary-light: #E6F2FF;
             --text-main: #2F3542;
             --text-light: #57606f;
             --white: #ffffff;
@@ -27,10 +27,101 @@
             color: var(--text-main);
             background-color: var(--bg-body);
             line-height: 1.8;
+            overflow-x: hidden; /* 横揺れ防止 */
         }
 
+        /* --- Loading / Opening Animation --- */
+        /* オープニング画面のスタイル */
+        #opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        /* 画面が上がって消えるクラス */
+        #opening-screen.is-loaded {
+            transform: translateY(-100%);
+        }
+
+        /* 跳ねるテニスボール */
+        .bouncing-ball {
+            font-size: 5rem;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        /* ボールの影 */
+        .ball-shadow {
+            width: 50px;
+            height: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            margin-top: 10px;
+            animation: shadow-scale 0.6s infinite alternate;
+        }
+
+        .opening-text {
+            color: white;
+            margin-top: 20px;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeInText 1s ease forwards 0.5s;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-80px); }
+        }
+
+        @keyframes shadow-scale {
+            from { transform: scale(1); opacity: 0.5; }
+            to { transform: scale(0.5); opacity: 0.2; }
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* --- Main Content Animations --- */
+        
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         a:hover { opacity: 0.7; }
+
+        /* 1. フェードインしながら上に上がる動き */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        /* 表示されたときに付与するクラス */
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 2. 背景グラデーションのアニメーション */
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3. ふわふわ浮くアニメーション */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
         /* --- Layout --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
@@ -38,13 +129,21 @@
 
         /* --- Header --- */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.90);
             backdrop-filter: blur(10px);
             height: 70px;
             display: flex; align-items: center;
             box-shadow: 0 2px 15px rgba(0,0,0,0.03);
             position: fixed; width: 100%; top: 0; z-index: 1000;
+            /* オープニング後にアニメーションさせるため初期は隠す */
+            transform: translateY(-100%);
+            transition: transform 0.8s ease-out 0.8s; /* 遅延を追加 */
         }
+        /* ロード完了後にヘッダーを表示 */
+        body.loaded header {
+            transform: translateY(0);
+        }
+
         .header-inner {
             width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;
             display: flex; justify-content: space-between; align-items: center;
@@ -58,7 +157,10 @@
         .hero {
             height: 80vh; min-height: 500px;
             display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(120deg, var(--white) 50%, var(--primary-light) 50%);
+            /* 動くグラデーション背景 */
+            background: linear-gradient(-45deg, #ffffff, var(--primary-light), #e0f7fa, #ffffff);
+            background-size: 400% 400%;
+            animation: gradient-flow 15s ease infinite;
             text-align: center; padding-top: 70px;
         }
         .hero-content h1 {
@@ -90,8 +192,14 @@
             padding: 50px; box-shadow: var(--shadow);
             display: flex; flex-direction: column; align-items: center;
             text-align: center; position: relative; overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
-        /* 船橋の海（波）模様 */
+        /* ホバー時の動き */
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 103, 192, 0.15);
+        }
+
         .about-card::before {
             content: ''; position: absolute; top: 0; left: 0;
             width: 100%; height: 6px;
@@ -106,7 +214,9 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             background: var(--primary-light);
             display: flex; align-items: center; justify-content: center;
-            font-size: 4rem; /* 絵文字のサイズ */
+            font-size: 4rem;
+            /* アイコンが浮遊するアニメーション */
+            animation: float 3s ease-in-out infinite;
         }
 
         .profile-name { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
@@ -116,7 +226,9 @@
         .meta-tag {
             background: #f1f3f5; padding: 5px 15px; border-radius: 20px;
             font-size: 0.9rem; color: var(--text-light);
+            transition: background 0.3s;
         }
+        .meta-tag:hover { background: #e9ecef; }
 
         /* --- Experience (Gakuchika) --- */
         .gakuchika-wrapper {
@@ -137,13 +249,25 @@
         .step-card {
             border: 1px solid #eee; border-radius: 12px; padding: 30px 20px;
             text-align: center; position: relative;
+            background: #fff;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
+        /* カードホバー時の動き */
+        .step-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
         .step-number {
             position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
             background: var(--primary); color: var(--white);
             width: 40px; height: 40px; line-height: 40px;
             border-radius: 50%; font-weight: bold;
+            transition: transform 0.3s;
         }
+        .step-card:hover .step-number { transform: translateX(-50%) scale(1.1); background: var(--accent); }
+        
         .step-card h4 { margin-top: 15px; margin-bottom: 10px; font-size: 1.2rem; color: var(--text-main); }
         .step-emoji { font-size: 2.5rem; display: block; margin-bottom: 10px; }
 
@@ -152,7 +276,9 @@
             color: var(--white); padding: 30px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             gap: 20px; flex-direction: column; text-align: center;
+            transition: transform 0.3s;
         }
+        .result-area:hover { transform: scale(1.02); }
 
         @media (min-width: 768px) {
             .about-card { flex-direction: row; text-align: left; gap: 50px; }
@@ -166,6 +292,13 @@
 </head>
 <body>
 
+    <!-- オープニングアニメーション画面 -->
+    <div id="opening-screen">
+        <div class="bouncing-ball">🎾</div>
+        <div class="ball-shadow"></div>
+        <div class="opening-text">TAKERU.H PORTFOLIO</div>
+    </div>
+
     <header>
         <div class="header-inner">
             <div class="logo">🍃 TAKERU.H</div>
@@ -174,7 +307,7 @@
     </header>
 
     <section class="hero">
-        <div class="container hero-content">
+        <div class="container hero-content fade-in-up">
             <div class="hero-badge">🏫 Campus: Funabashi, Chiba</div>
             <h1>Takeru Hirata</h1>
             <p>Design & Engineering Student</p>
@@ -184,9 +317,9 @@
 
     <section class="section" id="about">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-card">
-                <!-- プロフィールアイコン（絵文字） -->
+            <h2 class="section-title fade-in-up">About Me</h2>
+            <div class="about-card fade-in-up">
+                <!-- プロフィールアイコン（浮遊アニメーション付き） -->
                 <div class="avatar-area">
                     🎾
                 </div>
@@ -214,34 +347,34 @@
 
     <section class="section" id="experience">
         <div class="container">
-            <h2 class="section-title">Experience</h2>
+            <h2 class="section-title fade-in-up">Experience</h2>
             <div class="gakuchika-wrapper">
                 
-                <div class="story-header">
+                <div class="story-header fade-in-up">
                     <h3>🎾 テニス部部長としての練習改革</h3>
                     <p>練習環境の制約を「仕組み化」で克服</p>
                 </div>
 
-                <div class="story-intro">
+                <div class="story-intro fade-in-up">
                     <strong>⚠️ 課題：コート1面・25人の部員</strong><br>
                     活動の原動力はテニスへの熱意でしたが、コートが1面しかなく、練習時間の約5割が「待ち時間」でした。
                     このボトルネックを解消するため、私は以下の改革を行いました。
                 </div>
 
                 <div class="reform-steps">
-                    <div class="step-card">
+                    <div class="step-card fade-in-up" style="transition-delay: 0s;">
                         <div class="step-number">1</div>
                         <span class="step-emoji">📱</span>
                         <h4>iPadの導入</h4>
                         <p>学校のiPadを活用し、待ち時間をただの休憩ではなく「情報収集・分析の時間」へ変えました。</p>
                     </div>
-                    <div class="step-card">
+                    <div class="step-card fade-in-up" style="transition-delay: 0.1s;">
                         <div class="step-number">2</div>
                         <span class="step-emoji">🎥</span>
                         <h4>フォーム確認</h4>
                         <p>動画による客観的なフォーム確認を取り入れ、感覚と実際の動きのズレを修正しました。</p>
                     </div>
-                    <div class="step-card">
+                    <div class="step-card fade-in-up" style="transition-delay: 0.2s;">
                         <div class="step-number">3</div>
                         <span class="step-emoji">💬</span>
                         <h4>言語化サイクル</h4>
@@ -249,7 +382,7 @@
                     </div>
                 </div>
 
-                <div class="result-area">
+                <div class="result-area fade-in-up">
                     <div style="font-size: 3rem;">🏆</div>
                     <div>
                         <h4 style="font-size:1.3rem; margin-bottom:5px;">Result: 練習密度 約2倍</h4>
@@ -272,6 +405,41 @@
             </div>
         </div>
     </footer>
+
+    <!-- スクロールアニメーション & オープニング制御用のScript -->
+    <script>
+        // --- オープニングアニメーション制御 ---
+        window.addEventListener('load', () => {
+            const openingScreen = document.getElementById('opening-screen');
+            const body = document.body;
+
+            // 少し待ってからオープニング画面を上にスライド
+            setTimeout(() => {
+                openingScreen.classList.add('is-loaded');
+                body.classList.add('loaded'); // ヘッダー表示のトリガー
+            }, 2000); // 2秒間テニスボールを表示
+        });
+
+        // --- スクロール連動アニメーション ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 
 </body>
 </html>
