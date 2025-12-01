@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Takeru Hirata</title>
+    
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --primary: #0067C0;     /* 船橋ブルー */
+            --accent: #B8D200;      /* 船橋の梨グリーン */
+            --primary-light: #E6F2FF; /* 薄い水色 */
+            --text-main: #2F3542;
+            --text-light: #57606f;
+            --white: #ffffff;
+            --bg-body: #f4f7f6;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 103, 192, 0.08);
+        }
+
+        /* --- Reset & Base --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            line-height: 1.8;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        a:hover { opacity: 0.7; }
+
+        /* --- Layout --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 80px 0; }
+
+        /* --- Header --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            height: 70px;
+            display: flex; align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+        }
+        .header-inner {
+            width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-weight: 700; font-size: 1.4rem; color: var(--primary);
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 80vh; min-height: 500px;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(120deg, var(--white) 50%, var(--primary-light) 50%);
+            text-align: center; padding-top: 70px;
+        }
+        .hero-content h1 {
+            font-size: 3rem; color: var(--primary);
+            margin-bottom: 15px; line-height: 1.2;
+        }
+        .hero-badge {
+            display: inline-block; background: var(--white);
+            padding: 8px 20px; border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 0.9rem; color: var(--primary); font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* --- Section Titles --- */
+        .section-title {
+            text-align: center; font-size: 2rem; color: var(--primary);
+            margin-bottom: 50px; font-weight: bold; position: relative;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 50px; height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin: 15px auto 0; border-radius: 2px;
+        }
+
+        /* --- About --- */
+        .about-card {
+            background: var(--white); border-radius: var(--radius);
+            padding: 50px; box-shadow: var(--shadow);
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; position: relative; overflow: hidden;
+        }
+        /* 船橋の海（波）模様 */
+        .about-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 6px;
+            background: repeating-linear-gradient(45deg, var(--primary), var(--primary) 20px, var(--accent) 20px, var(--accent) 40px);
+        }
+
+        .avatar-area {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            border: 4px solid var(--white);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: var(--primary-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; /* 絵文字のサイズ */
+        }
+
+        .profile-name { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
+        .profile-en { font-size: 1rem; color: var(--text-light); margin-bottom: 20px; letter-spacing: 0.1em; }
+
+        .profile-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .meta-tag {
+            background: #f1f3f5; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.9rem; color: var(--text-light);
+        }
+
+        /* --- Experience (Gakuchika) --- */
+        .gakuchika-wrapper {
+            background: var(--white); border-radius: var(--radius);
+            box-shadow: var(--shadow); padding: 50px 40px;
+        }
+        .story-header h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--primary); }
+        
+        .story-intro {
+            background: #eef6fc; padding: 20px; border-radius: 8px;
+            margin-bottom: 40px; border-left: 5px solid var(--primary);
+        }
+
+        .reform-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; margin-bottom: 40px;
+        }
+        .step-card {
+            border: 1px solid #eee; border-radius: 12px; padding: 30px 20px;
+            text-align: center; position: relative;
+        }
+        .step-number {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: var(--white);
+            width: 40px; height: 40px; line-height: 40px;
+            border-radius: 50%; font-weight: bold;
+        }
+        .step-card h4 { margin-top: 15px; margin-bottom: 10px; font-size: 1.2rem; color: var(--text-main); }
+        .step-emoji { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+
+        .result-area {
+            background: linear-gradient(to right, var(--primary), #0056b3);
+            color: var(--white); padding: 30px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; flex-direction: column; text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .about-card { flex-direction: row; text-align: left; gap: 50px; }
+            .avatar-area { margin-bottom: 0; flex-shrink: 0; }
+            .profile-meta { justify-content: flex-start; }
+            .result-area { flex-direction: row; text-align: left; }
+        }
+
+        footer { background: var(--text-main); color: var(--white); text-align: center; padding: 30px 0; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="logo">🍃 TAKERU.H</div>
+            <div style="font-size: 0.9rem; font-weight:bold; color:var(--primary);">Portfolio</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-badge">🏫 Campus: Funabashi, Chiba</div>
+            <h1>Takeru Hirata</h1>
+            <p>Design & Engineering Student</p>
+            <p style="margin-top: 10px; opacity: 0.8;">仕組みで解決し、熱量で動かす。</p>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-card">
+                <!-- プロフィールアイコン（絵文字） -->
+                <div class="avatar-area">
+                    🎾
+                </div>
+
+                <div class="about-info">
+                    <h3 class="profile-name">平田 猛琉</h3>
+                    <div class="profile-en">Takeru Hirata</div>
+                    
+                    <div class="profile-meta">
+                        <div class="meta-tag">💻 情報系大学 3年</div>
+                        <div class="meta-tag" style="background: #e3f2fd; color: var(--primary);">
+                            📍 千葉県船橋市のキャンパスに通学
+                        </div>
+                    </div>
+
+                    <p>
+                        千葉県船橋市のキャンパスで情報技術を学ぶ大学生。
+                        アンデルセン公園のような「多くの人に価値を提供する場」が身近にある環境で、Webデザインとプログラミングスキルを磨いています。
+                        論理的思考力と、部活動で培ったリーダーシップを活かして課題解決に取り組んでいます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="experience">
+        <div class="container">
+            <h2 class="section-title">Experience</h2>
+            <div class="gakuchika-wrapper">
+                
+                <div class="story-header">
+                    <h3>🎾 テニス部部長としての練習改革</h3>
+                    <p>練習環境の制約を「仕組み化」で克服</p>
+                </div>
+
+                <div class="story-intro">
+                    <strong>⚠️ 課題：コート1面・25人の部員</strong><br>
+                    活動の原動力はテニスへの熱意でしたが、コートが1面しかなく、練習時間の約5割が「待ち時間」でした。
+                    このボトルネックを解消するため、私は以下の改革を行いました。
+                </div>
+
+                <div class="reform-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <span class="step-emoji">📱</span>
+                        <h4>iPadの導入</h4>
+                        <p>学校のiPadを活用し、待ち時間をただの休憩ではなく「情報収集・分析の時間」へ変えました。</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <span class="step-emoji">🎥</span>
+                        <h4>フォーム確認</h4>
+                        <p>動画による客観的なフォーム確認を取り入れ、感覚と実際の動きのズレを修正しました。</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <span class="step-emoji">💬</span>
+                        <h4>言語化サイクル</h4>
+                        <p>修正点を「言語化」してから打つサイクルを徹底し、論理的なプレーを定着させました。</p>
+                    </div>
+                </div>
+
+                <div class="result-area">
+                    <div style="font-size: 3rem;">🏆</div>
+                    <div>
+                        <h4 style="font-size:1.3rem; margin-bottom:5px;">Result: 練習密度 約2倍</h4>
+                        <p style="opacity: 0.9;">
+                            以前の「待ち時間」が「分析タイム」へ変わり、実質的な練習量が倍増。
+                            部員全員が論理的にプレーを説明できる組織となり、この仕組みは後輩にも引き継がれています。
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Takeru Hirata Portfolio.</p>
+            <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 10px;">
+                Studying in Funabashi 🍐
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
