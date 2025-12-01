@@ -31,7 +31,6 @@
         }
 
         /* --- Loading / Opening Animation --- */
-        /* オープニング画面のスタイル */
         #opening-screen {
             position: fixed;
             top: 0;
@@ -47,18 +46,15 @@
             transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        /* 画面が上がって消えるクラス */
         #opening-screen.is-loaded {
             transform: translateY(-100%);
         }
 
-        /* 跳ねるテニスボール */
         .bouncing-ball {
             font-size: 5rem;
             animation: bounce 0.6s infinite alternate;
         }
 
-        /* ボールの影 */
         .ball-shadow {
             width: 50px;
             height: 10px;
@@ -97,27 +93,23 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         a:hover { opacity: 0.7; }
 
-        /* 1. フェードインしながら上に上がる動き */
         .fade-in-up {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         
-        /* 表示されたときに付与するクラス */
         .fade-in-up.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* 2. 背景グラデーションのアニメーション */
         @keyframes gradient-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 3. ふわふわ浮くアニメーション */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -135,11 +127,9 @@
             display: flex; align-items: center;
             box-shadow: 0 2px 15px rgba(0,0,0,0.03);
             position: fixed; width: 100%; top: 0; z-index: 1000;
-            /* オープニング後にアニメーションさせるため初期は隠す */
             transform: translateY(-100%);
-            transition: transform 0.8s ease-out 0.8s; /* 遅延を追加 */
+            transition: transform 0.8s ease-out 0.8s;
         }
-        /* ロード完了後にヘッダーを表示 */
         body.loaded header {
             transform: translateY(0);
         }
@@ -157,7 +147,6 @@
         .hero {
             height: 80vh; min-height: 500px;
             display: flex; align-items: center; justify-content: center;
-            /* 動くグラデーション背景 */
             background: linear-gradient(-45deg, #ffffff, var(--primary-light), #e0f7fa, #ffffff);
             background-size: 400% 400%;
             animation: gradient-flow 15s ease infinite;
@@ -194,7 +183,6 @@
             text-align: center; position: relative; overflow: hidden;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
-        /* ホバー時の動き */
         .about-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 103, 192, 0.15);
@@ -215,7 +203,6 @@
             background: var(--primary-light);
             display: flex; align-items: center; justify-content: center;
             font-size: 4rem;
-            /* アイコンが浮遊するアニメーション */
             animation: float 3s ease-in-out infinite;
         }
 
@@ -242,17 +229,30 @@
             margin-bottom: 40px; border-left: 5px solid var(--primary);
         }
 
+        /* --- Reform Steps Grid Layout --- */
         .reform-steps {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
         }
+        @media (max-width: 850px) {
+            .reform-steps { grid-template-columns: 1fr; }
+        }
+
         .step-card {
-            border: 1px solid #eee; border-radius: 12px; padding: 30px 20px;
-            text-align: center; position: relative;
+            border: 1px solid #eee; 
+            border-radius: 12px; 
+            padding: 30px 25px;
             background: #fff;
             transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* これで全体は中央に寄る */
         }
-        /* カードホバー時の動き */
+
         .step-card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
@@ -265,11 +265,31 @@
             width: 40px; height: 40px; line-height: 40px;
             border-radius: 50%; font-weight: bold;
             transition: transform 0.3s;
+            text-align: center; /* 【修正】数字を円の真ん中に！ */
         }
         .step-card:hover .step-number { transform: translateX(-50%) scale(1.1); background: var(--accent); }
         
-        .step-card h4 { margin-top: 15px; margin-bottom: 10px; font-size: 1.2rem; color: var(--text-main); }
+        .step-card h4 { 
+            margin-top: 15px; 
+            margin-bottom: 15px; 
+            font-size: 1.2rem; 
+            color: var(--text-main); 
+            font-weight: bold;
+            text-align: center; /* 【修正】タイトルも真ん中に！ */
+            width: 100%;
+        }
+        
         .step-emoji { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+        
+        /* 文章だけ左揃え */
+        .step-card p { 
+            text-align: left; 
+            width: 100%;
+            margin-top: auto;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
 
         .result-area {
             background: linear-gradient(to right, var(--primary), #0056b3);
